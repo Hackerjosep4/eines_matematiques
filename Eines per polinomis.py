@@ -17,18 +17,24 @@ def factoritzar_polinomi(polinomi):
     numeros_extra = []
     factors = []
     polinomi_nou = []
-    faccom = factor_comu(polinomi)
+    if son_integuers(polinomi):
+        convertir_a_int(polinomi)
+        faccom = factor_comu(polinomi)
+    else:
+        faccom = 1
     if faccom != 1:
         numeros_extra.append(faccom)
         for i in range(0, len(polinomi)):
             polinomi[i] = polinomi[i] / faccom
+    
+    polinomi = convertir_a_int_condicional(polinomi)
 
     if polinomi[-1] == 0:
         factors.append(0)
         for i in range(0, len(polinomi)-1):
             polinomi_nou.append(polinomi[i])
         
-        numeros_extra_nou, factors_nou = factoritzar_polinomi(polinomi)
+        numeros_extra_nou, factors_nou = factoritzar_polinomi(polinomi_nou)
         for ext in numeros_extra_nou:
             numeros_extra.append(ext)
         for fac in factors_nou:
@@ -50,9 +56,9 @@ def factoritzar_polinomi(polinomi):
             raise Exception("No hi ha divisor exacte (es un polinomi sense divisors enters)")
         
         factors.append(divisor_exacto)
-        polinomi, _ = rufini(polinomi, divisor_exacto)
+        polinomi_nou, _ = rufini(polinomi, divisor_exacto)
         
-        numeros_extra_nou, factors_nou = factoritzar_polinomi(polinomi)
+        numeros_extra_nou, factors_nou = factoritzar_polinomi(polinomi_nou)
         for ext in numeros_extra_nou:
             numeros_extra.append(ext)
         for fac in factors_nou:
@@ -99,6 +105,33 @@ def factoritzar_2_grau(polinomi):
     factors.append(sol2 * -1)
 
     return [numeros_extra, factors]
+
+
+
+def son_integuers(polinomi):
+    for coef in polinomi:
+        if coef % 1 != 0:
+            return False
+    return True
+
+
+
+def convertir_a_int(polinomi):
+    polinomi_int = []
+    for coef in polinomi:
+        polinomi_int.append(int(coef))
+    return polinomi_int
+
+
+
+def convertir_a_int_condicional(polinomi):
+    polinomi_int = []
+    for coef in polinomi:
+        if coef % 1 == 0:
+            polinomi_int.append(int(coef))
+        else:
+            polinomi_int.append(coef)
+    return polinomi_int
 
 
 
