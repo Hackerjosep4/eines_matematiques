@@ -93,13 +93,13 @@ def factoritzar_2_grau(polinomi):
     b = polinomi[1]
     c = polinomi[2]
 
-    delta = ((b ** 2) - (4 * a * c))
+    delta = ((pow(b, 2)) - (4 * a * c))
 
     if delta < 0:
         raise Exception("La ecuació de 2n grau no te solució")
 
-    sol1 = ((-1 * b) + (delta ** (1 / 2))) / (2 * a)
-    sol2 = ((-1 * b) - (delta ** (1 / 2))) / (2 * a)
+    sol1 = ((-1 * b) + (pow(delta, (1 / 2)))) / (2 * a)
+    sol2 = ((-1 * b) - (pow(delta, (1 / 2)))) / (2 * a)
 
     factors.append(sol1 * -1)
     factors.append(sol2 * -1)
@@ -157,7 +157,7 @@ def residu(polinomi, a):
     grau = len(polinomi)-1
 
     for i in range(0, grau+1):
-        residu += polinomi[i] * (a**(grau-i))
+        residu += polinomi[i] * (pow(a, (grau-i)))
 
     return residu
 
