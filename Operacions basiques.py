@@ -99,7 +99,7 @@ def fer_arrel():
         a = int(input("Introdueix el valor de a (m√(a^n)) (m es arrel quadrada, qubica, ...) : "))
         n = int(input("Introdueix el valor de n (m√(a^n)) (m es arrel quadrada, qubica, ...) : "))
         m = int(input("Introdueix el valor de m (m√(a^n)) (m es arrel quadrada, qubica, ...) : "))
-        print(f"El resultat és {pow(a, m/n)}")
+        print(f"El resultat és {pow(a, n/m)}")
 
     except ValueError:
         print("")
