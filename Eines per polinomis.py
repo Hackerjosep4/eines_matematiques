@@ -393,8 +393,10 @@ def factoritzador():
 
         numeros_extra, factors = factoritzar_polinomi(polinomi)
 
+        factors = convertir_a_int_condicional(factors)
+
         print_factors(numeros_extra, factors)
-        print_solucions(calc_solucions(factors))
+        print_solucions(convertir_a_int_condicional(calc_solucions(factors)))
 
     except ValueError:
         print("")
@@ -441,7 +443,8 @@ def trobar_divisor():
 
         resultat = divisivilitat(polinomi)
 
-        print_polinomi(resultat)
+        print(f"El divisor exacte es: {resultat}")
+        print("")
 
     except ValueError:
         print("")
@@ -464,6 +467,8 @@ def fer_rufini():
         a = int(input("Introdueix el terma \"a\" del binomi divisor (x - a) : ")) * -1
 
         resultat, residu = rufini(polinomi, a)
+
+        resultat = convertir_a_int_condicional(resultat)
 
         print_polinomi(resultat)
         print(f"El residu es: {residu}")
