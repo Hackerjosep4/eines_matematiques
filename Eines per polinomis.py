@@ -340,9 +340,15 @@ def return_output_polinomi(polinomi):
                 if fac < -1:
                     output += f" - {fac*-1}"
                 elif fac == -1:
-                    output += f" - "
+                    if grau_actual == 0:
+                        output += f" - 1"
+                    else:
+                        output += f" - "
                 elif fac == 1:
-                    output += f" + "
+                    if grau_actual == 0:
+                        output += f" + 1"
+                    else:
+                        output += f" + "
                 elif fac > 1:
                     output += f" + {fac}"
                 
