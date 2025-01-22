@@ -14,68 +14,57 @@ from sympy import divisors
 
 
 def factoritzar_polinomi(polinomi):
-    numeros_extra = []
-    grau2 = []
     factors = []
-    polinomi_nou = []
     if son_integuers(polinomi):
-        convertir_a_int(polinomi)
+        polinomi = convertir_a_int(polinomi)
         faccom = factor_comu(polinomi)
     else:
         faccom = 1
     if faccom != 1:
-        numeros_extra.append(faccom)
+        factors.append([faccom])
         for i in range(0, len(polinomi)):
             polinomi[i] = polinomi[i] / faccom
     
     polinomi = convertir_a_int_condicional(polinomi)
 
     if polinomi[-1] == 0:
-        factors.append(0)
+        factors.append([1, 0])
+        polinomi_nou = []
         for i in range(0, len(polinomi)-1):
             polinomi_nou.append(polinomi[i])
         
-        numeros_extra_nou, grau2, factors_nou = factoritzar_polinomi(polinomi_nou)
-        for ext in numeros_extra_nou:
-            numeros_extra.append(ext)
+        factors_nou = factoritzar_polinomi(polinomi_nou)
         for fac in factors_nou:
             factors.append(fac)
         
     elif len(polinomi) == 3:
-        if grau_2_solucio(polinomi):
-            numeros_extra_nou, factors_nou = factoritzar_2_grau(polinomi)
-            for ext in numeros_extra_nou:
-                numeros_extra.append(ext)
-            for fac in factors_nou:
-                factors.append(fac)
-        else:
-            grau2 = polinomi
+        factors_nou = factoritzar_2_grau(polinomi)
+        for fac in factors_nou:
+            factors.append(fac)
         
     elif len(polinomi) > 3:
 
         
         divisor_exacto = divisivilitat(polinomi)
         if divisor_exacto == 0:
-            raise Exception("No hi ha divisor exacte (es un polinomi sense divisors enters)")
-        
-        factors.append(divisor_exacto)
-        polinomi_nou, _ = rufini(polinomi, divisor_exacto)
-        
-        numeros_extra_nou, grau2, factors_nou = factoritzar_polinomi(polinomi_nou)
-        for ext in numeros_extra_nou:
-            numeros_extra.append(ext)
-        for fac in factors_nou:
-            factors.append(fac)
+            factors.append(polinomi)
+        else:
+            factors.append([1, divisor_exacto])
+            polinomi_nou, _ = rufini(polinomi, divisor_exacto)
+            
+            factors_nou = factoritzar_polinomi(polinomi_nou)
+            for fac in factors_nou:
+                factors.append(fac)
         
     elif len(polinomi) == 2:
         if polinomi[0] == 1:
-            factors.append(polinomi[1])
+            factors.append([1, polinomi[1]])
         else:
-            numeros_extra.append[polinomi[0]]
-            factors.append(polinomi[1]/polinomi[0])
+            factors.append([polinomi[0]])
+            factors.append([1, polinomi[1]/polinomi[0]])
         
 
-    return [numeros_extra, grau2, factors]
+    return factors
 
 
 
@@ -86,11 +75,7 @@ def factor_comu(polinomi):
 
 
 def factoritzar_2_grau(polinomi):
-    numeros_extra = []
     factors = []
-
-    if polinomi[0] != 1:
-        numeros_extra.append(polinomi[0])
     
     a = polinomi[0]
     b = polinomi[1]
@@ -99,26 +84,18 @@ def factoritzar_2_grau(polinomi):
     delta = ((pow(b, 2)) - (4 * a * c))
 
     if delta < 0:
-        raise Exception("La ecuació de 2n grau no te solució")
+        factors = [polinomi]
+    else:
+        if polinomi[0] != 1:
+            factors.append([polinomi[0]])
 
-    sol1 = ((-1 * b) + (pow(delta, (1 / 2)))) / (2 * a)
-    sol2 = ((-1 * b) - (pow(delta, (1 / 2)))) / (2 * a)
+        sol1 = ((-1 * b) + (pow(delta, (1 / 2)))) / (2 * a)
+        sol2 = ((-1 * b) - (pow(delta, (1 / 2)))) / (2 * a)
 
-    factors.append(sol1 * -1)
-    factors.append(sol2 * -1)
+        factors.append([1, sol1 * -1])
+        factors.append([1, sol2 * -1])
 
-    return [numeros_extra, factors]
-
-
-
-def grau_2_solucio(polinomi):
-    a = polinomi[0]
-    b = polinomi[1]
-    c = polinomi[2]
-
-    delta = ((pow(b, 2)) - (4 * a * c))
-
-    return not (delta < 0)
+    return factors
 
 
 
@@ -295,30 +272,15 @@ def binomi_de_newton(grau):
 
 
 
-def print_factors(nums_extra, grau2, factors):
+def print_factors(factors):
 
     output = f"La factorització es: "
 
-    if len(nums_extra) > 0:
-        output += f"{nums_extra[0]}"
-
-        for i in range(1, len(nums_extra)):
-            output += f" * {nums_extra[i]}"
-    
     if len(factors) > 0:
-        if len(nums_extra) == 0:
-            output += f"({return_output_polinomi([1, factors[0]])})"
-        else:
-            output += f" * ({return_output_polinomi([1, factors[0]])})"
+        output += f"({return_output_polinomi(factors[0])})"
 
         for i in range(1, len(factors)):
-            output += f" * ({return_output_polinomi([1, factors[i]])})"
-    
-    if len(grau2) > 0:
-        if (len(nums_extra) == 0) and (len(factors) == 0):
-            output += f"({return_output_polinomi(grau2)})"
-        else:
-            output += f" * ({return_output_polinomi(grau2)})"
+            output += f" * ({return_output_polinomi(factors[i])})"
     
 
     print(output)
@@ -331,9 +293,7 @@ def return_output_polinomi(polinomi):
     output = ""
 
     if grau > -1:
-        output += f"{polinomi[0]}x^{grau}"
-
-        for i in range(1, grau+1):
+        for i in range(0, grau+1):
             fac = polinomi[i]
             grau_actual = grau - i
             if fac != 0:
@@ -359,7 +319,7 @@ def return_output_polinomi(polinomi):
                 elif grau_actual > 1:
                     output += f"x^{grau_actual}"
     
-    return output
+    return output[3:]
 
 
 
@@ -403,7 +363,8 @@ def calc_solucions(factors):
     solucions = []
 
     for fac in factors:
-        solucions.append(fac * -1)
+        if len(fac) == 2:
+            solucions.append((fac[1] * -1)/fac[0])
 
     return solucions
 
@@ -429,11 +390,12 @@ def factoritzador():
         
         polinomi = demanar_polinomi()
 
-        numeros_extra, grau2, factors = factoritzar_polinomi(polinomi)
+        factors = factoritzar_polinomi(polinomi)
 
-        factors = convertir_a_int_condicional(factors)
+        for i in range(0, len(factors)):
+            factors[i] = convertir_a_int_condicional(factors[i])
 
-        print_factors(numeros_extra, grau2, factors)
+        print_factors(factors)
         print_solucions(convertir_a_int_condicional(calc_solucions(factors)))
 
     except ValueError:
