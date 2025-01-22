@@ -1,8 +1,6 @@
 # Immports
 
 
-
-
 from math import gcd
 from math import factorial
 from functools import reduce
@@ -11,6 +9,12 @@ from sympy import divisors
 
 
 # Funcions
+
+
+
+
+
+# Calculs i altres
 
 
 def factoritzar_polinomi(polinomi):
@@ -270,6 +274,8 @@ def binomi_de_newton(grau):
     return coefs
 
 
+# Codi per mostrar resultats
+
 
 
 def print_factors(factors):
@@ -382,6 +388,9 @@ def demanar_polinomi():
     print("")
     
     return polinomi
+
+
+# Codi per a la interacció amb l'usuari / per utilitzar funcions
 
 
 
@@ -640,18 +649,7 @@ def  fer_punt_triangle_pascal():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-# Codi d'interaccio amb l'usuari / Codi d'iniciació del programa
+# Menu / Codi d'iniciació del programa
 
 entrada = ""
 
