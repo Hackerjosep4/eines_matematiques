@@ -325,7 +325,10 @@ def return_output_polinomi(polinomi):
                 elif grau_actual > 1:
                     output += f"x^{grau_actual}"
     
-    return output[3:]
+    if polinomi[0] < 0:
+        return output[1:]
+    else:
+        return output[3:]
 
 
 
