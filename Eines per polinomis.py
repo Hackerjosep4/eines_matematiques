@@ -349,10 +349,13 @@ def print_bin_new(coefs):
 def print_solucions(solucions):
     output = f"Les posibles solucions son: "
 
-    output += f"{solucions[0]}"
+    if len(solucions) >0:
+        output += f"{solucions[0]}"
 
-    for i in range(1, len(solucions)):
-        output += f" / {solucions[i]}"
+        for i in range(1, len(solucions)):
+            output += f" / {solucions[i]}"
+    else:
+        output += f"No hi ha solucions calculables"
     
     print(output)
     print("")
